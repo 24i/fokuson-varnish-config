@@ -1,0 +1,8 @@
+#Extra options to provide to varnishd at startup. Defaults here are
+# based on a production setup with a decicated server for Varnish with
+# 64 GiB RAM and 1+ GiB network connectivity.
+
+DAEMON_OPTS="-p thread_pools=4 -p thread_pool_min=100 -p thread_pool_max=1000 -p thread_pool_timeout=300 \
+             -p vsl_reclen=2047 \
+             -p gzip_level=9 \
+             -p feature=+esi_disable_xml_check,+esi_ignore_other_elements"

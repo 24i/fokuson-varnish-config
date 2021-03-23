@@ -1,0 +1,1 @@
+%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-agent}i" %{Varnish:vxid}x %{VCL_Log:XFF}x %{Varnish:time_firstbyte}x %{Varnish:handling}x %{X-Device-Model}i %{VCL_Log:backend}x

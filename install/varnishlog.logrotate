@@ -1,0 +1,23 @@
+/var/log/varnish/varnish.log {
+  daily
+  rotate 90
+  compress
+  delaycompress
+  missingok
+  postrotate
+    systemctl -q is-active varnishlog.service || exit 0
+    systemctl reload varnishlog.service
+  endscript
+}
+
+/var/log/varnish/varnish_backend_health.log {
+  daily
+  rotate 90
+  compress
+  delaycompress
+  missingok
+  postrotate
+    systemctl -q is-active varnishlog_backendhealth.service || exit 0
+    systemctl reload varnishlog_backendhealth.service
+  endscript
+}
