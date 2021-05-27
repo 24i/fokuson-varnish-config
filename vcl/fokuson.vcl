@@ -164,7 +164,7 @@ sub vcl_recv {
         set req.backend_hint = mailservice.backend();
     } */
 
-    set req.http.X-Use-ESI = true;
+    set req.http.X-Use-ESI = "true";
 }
 
 # HTTP keepalive for pipe is unsafe if we have a multiplexing LB in
