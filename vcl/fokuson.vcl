@@ -221,7 +221,7 @@ sub vcl_deliver {
 
     # Log the backend name - but not for cache hits.
     if (obj.hits == 0){
-        std.log("backend:" + resp.http.Backend);
+        std.log("backend:" + resp.http.Backend-Name);
     }
     # Don't give away backend names to clients. Primarily for security reasons.
     unset resp.http.Backend-Name;
