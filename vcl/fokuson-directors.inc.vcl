@@ -69,7 +69,7 @@ backend clientportal1 {
 backend clientportal2 {
     .host = "192.0.2.2";
     .port = "8080";
-    .first_byte_timeout = 90s;
+    .first_byte_timeout = 30s;
     .connect_timeout = 1.1s;
     .probe = clientPortalProbe;
 }
