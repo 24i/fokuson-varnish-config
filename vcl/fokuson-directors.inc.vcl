@@ -62,7 +62,7 @@ backend clientportal1 {
     .port = "8080";
     .first_byte_timeout = 30s;
     .connect_timeout = 1.1s;
-    .probe = clientPortalProbe;
+    .probe = clientportalProbe;
 }
 
 /*
@@ -71,7 +71,7 @@ backend clientportal2 {
     .port = "8080";
     .first_byte_timeout = 30s;
     .connect_timeout = 1.1s;
-    .probe = clientPortalProbe;
+    .probe = clientportalProbe;
 }
 */
 
