@@ -27,12 +27,18 @@ sub offline_portal {
     if (req.url == "/dwr/index.html"){
         return(synth(410,"Gone"));
     }
-    //Rewrite start URL's to hit the offline-portal
+    //Rewrite start URL's to hit the online-maintenance portal
     if (req.url ~ "^/client-portal/(custom|device)/"){
-        if (req.http.Accept ~ "text/html"){
-            set req.url = "/";
+        // Use the following if statement to identify devices that needs to run the legacy offline-portal E.g.
+        // "<user-agent1>" and "<user-agent2>". Adapt to match your detployment. 
+        if (req.http.User-Agent ~ "(<user-agent1>|<user-agent2>)"){
+            set req.url = "/offline-portal/index.html";
         } else {
-            set req.url = regsub(req.url, ".*(/\w+(\.\w+(\?\w*)?)?$)","\1");
+            if (req.http.Accept ~ "text/html"){
+                set req.url = "/";
+            } else {
+                set req.url = regsub(req.url, ".*(/\w+(\.\w+(\?\w*)?)?$)","\1");
+            }
         }       
     }
 
