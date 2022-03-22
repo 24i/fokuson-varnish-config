@@ -91,10 +91,10 @@ sub vcl_recv {
 	if (req.http.OrigCookie ~ "(^|;\s*)preview(_[0-9a-fA-F]{2}){6}=true"){
 	   if (req.http.Cookie) {
 	       std.log("Cookie header already present: " + req.http.Cookie);
-	       set req.http.Cookie = req.http.Cookie +  "; " + regsub(req.http.OrigCookie, "(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true).*","\2");
+               set req.http.Cookie = req.http.Cookie +  "; " + regsub(req.http.OrigCookie, "(g?)(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true(;\w*)?)","\2; ");
 	   } else {
 	       std.log("No Cookie header present");
-	       set req.http.Cookie = regsub(req.http.OrigCookie, "(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true).*","\2");
+	       set req.http.Cookie = regsub(req.http.OrigCookie, "(g?)(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true)(;\w*)?", "\2; ");
 	   }	   
         }
     }
