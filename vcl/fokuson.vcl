@@ -87,15 +87,21 @@ sub vcl_recv {
 	    set req.http.Access-Key = regsub(req.http.OrigCookie, "(^|.*;)\s*ACCESS_KEY=([^;]+)($|.*)","\2");
         }
 
-	# Copy any preview cookies back to the Cookie string
-	if (req.http.OrigCookie ~ "(^|;\s*)preview(_[0-9a-fA-F]{2}){6}=true"){
-	   if (req.http.Cookie) {
-	       std.log("Cookie header already present: " + req.http.Cookie);
-               set req.http.Cookie = req.http.Cookie +  "; " + regsub(req.http.OrigCookie, "(g?)(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true(;\w*)?)","\2; ");
-	   } else {
-	       std.log("No Cookie header present");
-	       set req.http.Cookie = regsub(req.http.OrigCookie, "(g?)(^|.*\s+)(preview(_[0-9a-fA-F]{2}){6}=true)(;\w*)?", "\2; ");
-	   }	   
+        # Copy any preview cookies back to the Cookie string
+        if (req.http.OrigCookie ~ "(^|;\s*)preview(_[0-9a-fA-F]{2}){6}=true"){
+            set req.http.TmpCookie = ";" + req.http.OrigCookie;
+            set req.http.TmpCookie = regsuball(req.http.TmpCookie, "; +", ";");
+            set req.http.TmpCookie = regsuball(req.http.TmpCookie, ";(preview(_[0-9a-fA-F]{2}){6})=", "; \1=");
+            set req.http.TmpCookie = regsuball(req.http.TmpCookie, ";[^ ][^;]*", "");
+            set req.http.TmpCookie = regsuball(req.http.TmpCookie, "^[; ]+|[; ]+$", "");
+            if (req.http.Cookie) {
+                std.log("Cookie header already present: " + req.http.Cookie);
+                set req.http.Cookie = req.http.Cookie +  "; " + req.http.TmpCookie;
+            } else {
+                std.log("No Cookie header present");
+                set req.http.Cookie = req.http.TmpCookie;
+            }
+            unset req.http.TmpCookie;
         }
     }
 
